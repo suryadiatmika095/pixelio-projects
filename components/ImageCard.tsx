@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface ImageCardProps {
   image: {
@@ -13,7 +14,13 @@ interface ImageCardProps {
 const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
   return (
     <div className="image-card">
-      <img src={image.webformatURL} alt={image.tags} />
+      <Image 
+        src={image.webformatURL} 
+        alt={image.tags} 
+        width={300} 
+        height={200} 
+        style={{ width: "300px", height: "200px", objectFit: "cover" }}
+      />
 
       <div className="image-info" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <p>Photo by <span>{image.user}</span></p>

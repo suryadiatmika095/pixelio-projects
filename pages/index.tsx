@@ -3,14 +3,22 @@ import { GetServerSideProps } from "next";
 import axios from "axios";
 import SearchBar from "../components/SearchBar";
 import ImageCard from "../components/ImageCard";
-import Footer from "../components/Footer"; // Import Footer
+import Footer from "../components/Footer";
+
+interface Image {
+  id: number;
+  webformatURL: string;
+  largeImageURL: string;
+  tags: string;
+  user: string;
+}
 
 interface HomeProps {
-  images: any[];
+  images: Image[];
 }
 
 export default function Home({ images }: HomeProps) {
-  const [searchResults, setSearchResults] = useState<any[]>(images);
+  const [searchResults, setSearchResults] = useState<Image[]>(images);
 
   return (
     <div className="container">
@@ -37,11 +45,28 @@ export default function Home({ images }: HomeProps) {
 // Server Side Rendering (SSR)
 export const getServerSideProps: GetServerSideProps = async () => {
   const API_KEY = process.env.NEXT_PUBLIC_PIXABAY_API_KEY;
-  const response = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=nature&image_type=photo`);
 
-  return {
-    props: {
-      images: response.data.hits,
-    },
-  };
+  if (!API_KEY) {
+    return {
+      props: {
+        images: [],
+      },
+    };
+  }
+
+  try {
+    const response = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=nature&image_type=photo`);
+    return {
+      props: {
+        images: response.data.hits || [],
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    return {
+      props: {
+        images: [],
+      },
+    };
+  }
 };
