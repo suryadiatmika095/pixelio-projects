@@ -1,8 +1,34 @@
 import { useState } from "react";
 import axios from "axios";
 
+// Define a proper type for Pixabay image results
+interface PixabayImage {
+  id: number;
+  pageURL: string;
+  type: string;
+  tags: string;
+  previewURL: string;
+  previewWidth: number;
+  previewHeight: number;
+  webformatURL: string;
+  webformatWidth: number;
+  webformatHeight: number;
+  largeImageURL: string;
+  imageWidth: number;
+  imageHeight: number;
+  imageSize: number;
+  views: number;
+  downloads: number;
+  collections: number;
+  likes: number;
+  comments: number;
+  user_id: number;
+  user: string;
+  userImageURL: string;
+}
+
 interface SearchBarProps {
-  setSearchResults: (images: any[]) => void;
+  setSearchResults: (images: PixabayImage[]) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ setSearchResults }) => {
